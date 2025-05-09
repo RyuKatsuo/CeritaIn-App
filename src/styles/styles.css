@@ -44,20 +44,22 @@ body {
 }
 
 .skip-link {
-  /* background: transparent; */
-  border: none;
-  color: inherit;
-  font: inherit;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
+  background: var(--primary-color);
+  padding: 4px 8px;
+
+  inset-inline: auto;
+  position: absolute;
+
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+
+  transform: translateY(-150%);
 }
 
-.skip-link:hover,
+.skip-link:focus,
 .skip-link:focus-within {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  transform: translateY(0%);
 }
 
 .container {
