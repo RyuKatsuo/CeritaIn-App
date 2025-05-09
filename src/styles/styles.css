@@ -44,7 +44,7 @@ body {
 }
 
 .skip-link {
-  background: transparent;
+  /* background: transparent; */
   border: none;
   color: inherit;
   font: inherit;
