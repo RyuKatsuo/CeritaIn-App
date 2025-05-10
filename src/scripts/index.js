@@ -7,6 +7,8 @@ import 'leaflet/dist/leaflet.css';
 // Components
 import App from './pages/app';
 import Camera from './utils/camera';
+import { registerServiceWorker } from './utils';
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const app = new App({
@@ -16,6 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     skipLinkButton: document.getElementById('skip-link'),
   });
   await app.renderPage();
+
+  await registerServiceWorker();
+  console.log('Berhasil mendaftarkan service worker');
+  
 
   window.addEventListener('hashchange', async () => {
     await app.renderPage();

@@ -35,7 +35,10 @@ export default class NewPresenter {
         return;
       }
 
-      this.#view.storeSuccessfully(response.message, response.data);
+      // No need to wait response
+      this.#notifyToAllUser();
+      
+      this.#view.storeSuccessfully(response.message);
     } catch (error) {
       console.error('postNewStory: error:', error);
       this.#view.storeFailed(error.message);
@@ -43,4 +46,21 @@ export default class NewPresenter {
       this.#view.hideSubmitLoadingButton();
     }
   }
+
+  async #notifyToAllUser() {
+    try {
+      const response = await this.#model.sendStoryToAllUserViaNotification();
+
+      if (!response.ok) {
+        console.error('#notifyToAllUser: response:', response);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('#notifyToAllUser: error:', error);
+      return false;
+    }
+  }
+
 }

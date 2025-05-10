@@ -3,10 +3,18 @@ import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
   generateUnauthenticatedNavigationListTemplate,
+  generateSubscribeButtonTemplate,
+  generateUnsubscribeButtonTemplate,
 } from '../templates';
-import { setupSkipToContent, transitionHelper } from '../utils';
+import { isServiceWorkerAvailable, setupSkipToContent, transitionHelper } from '../utils';
 import { getAccessToken, getLogout } from '../utils/auth';
 import { routes } from '../routes/routes';
+import {
+  isCurrentPushSubscriptionAvailable,
+  subscribe,
+  unsubscribe,
+} from '../utils/notification-helper';
+import NotFoundPage from './not-found/404';
 
 export default class App {
   #content;
@@ -77,12 +85,38 @@ export default class App {
     });
   }
 
+  async #setupPushNotification() {
+    const pushNotificationTools = document.getElementById('push-notification-tools');
+    const isSubscribed = await isCurrentPushSubscriptionAvailable();
+
+    if (isSubscribed) {
+      pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+      document.getElementById('unsubscribe-button').addEventListener('click', () => {
+        unsubscribe().finally(() => {
+          this.#setupPushNotification();
+        });
+      });
+
+      return;
+    }
+
+    pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+    document.getElementById('subscribe-button').addEventListener('click', () => {
+      subscribe().finally(() => {
+        this.#setupPushNotification();
+      });
+    });
+  }
+
   async renderPage() {
     const url = getActiveRoute();
+    
+    
     const route = routes[url];
-
+    console.log(url, 'route');
+    
     // Get page instance
-    const page = route();
+    const page = route ? route() : new NotFoundPage();
 
     const transition = transitionHelper({
       updateDOM: async () => {
@@ -95,6 +129,10 @@ export default class App {
     transition.updateCallbackDone.then(() => {
       scrollTo({ top: 0, behavior: 'instant' });
       this.#setupNavigationList();
+      
+      if (isServiceWorkerAvailable()) {
+        this.#setupPushNotification();
+      }
     });
   }
 }

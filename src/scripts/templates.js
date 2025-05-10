@@ -15,6 +15,7 @@ export function generateLoaderAbsoluteTemplate() {
 export function generateMainNavigationListTemplate() {
   return `
     <li><a id="stories-list-button" class="stories-list-button" href="#/">Daftar Cerita</a></li>
+    <li><a id="bookmark-button" class="bookmark-button" href="#/bookmark">Laporan Tersimpan</a></li>
   `;
 }
 
@@ -96,42 +97,6 @@ export function generateStoriesItemTemplate({
   `;
 }
 
-export function generateDamageLevelMinorTemplate() {
-  return `
-    <span class="story-detail__damage-level__minor" data-damage-level="minor">Kerusakan Rendah</span>
-  `;
-}
-
-export function generateDamageLevelModerateTemplate() {
-  return `
-    <span class="story-detail__damage-level__moderate" data-damage-level="moderate">Kerusakan Sedang</span>
-  `;
-}
-
-export function generateDamageLevelSevereTemplate() {
-  return `
-    <span class="story-detail__damage-level__severe" data-damage-level="severe">Kerusakan Berat</span>
-  `;
-}
-
-export function generateDamageLevelBadge(damageLevel) {
-  if (damageLevel === 'minor') {
-    return generateDamageLevelMinorTemplate();
-  }
-
-  if (damageLevel === 'moderate') {
-    return generateDamageLevelModerateTemplate();
-  }
-
-  if (damageLevel === 'severe') {
-    return generateDamageLevelSevereTemplate();
-  }
-
-  return '';
-}
-
-
-
 export function generateStoriesDetailTemplate({
   name,
   description,
@@ -186,9 +151,49 @@ export function generateStoriesDetailTemplate({
             <div id="map" class="story-detail__map"></div>
             <div id="map-loading-container"></div>
           </div>
+      </div>
+
+      <hr>
+
+      <div class="story-detail__body__actions__container">
+          <h2>Aksi</h2>
+          <div class="story-detail__actions__buttons">
+            <div id="save-actions-container"></div>
+          </div>
         </div>
     </div>
   `;
 }
 
+export function generateSubscribeButtonTemplate() {
+  return `
+    <button id="subscribe-button" class="btn subscribe-button">
+      Subscribe <i class="fas fa-bell"></i>
+    </button>
+  `;
+}
 
+export function generateUnsubscribeButtonTemplate() {
+  return `
+    <button id="unsubscribe-button" class="btn unsubscribe-button">
+      Unsubscribe <i class="fas fa-bell-slash"></i>
+    </button>
+  `;
+}
+
+
+export function generateSaveStoryButtonTemplate() {
+  return `
+    <button id="story-detail-save" class="btn btn-transparent">
+      Simpan laporan <i class="far fa-bookmark"></i>
+    </button>
+  `;
+}
+
+export function generateRemoveStoryButtonTemplate() {
+  return `
+    <button id="story-detail-remove" class="btn btn-transparent">
+      Buang laporan <i class="fas fa-bookmark"></i>
+    </button>
+  `;
+}
